@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love ❤</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Caveat:wght@600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #ff4b72;
+            --primary-glow: rgba(255, 75, 114, 0.5);
+            --gold: #f6d365;
+            --gold-glow: rgba(246, 211, 101, 0.4);
+            --paper-bg: rgba(255, 248, 235, 0.08);
+            --paper-border: rgba(246, 211, 101, 0.25);
+            --bg-dark: #0d0614;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* Floating Particles Canvas */
+        #particleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Background Glows */
+        .glow-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            z-index: 0;
+            animation: pulseGlow 10s infinite alternate ease-in-out;
+        }
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: #8a2be2;
+            top: -150px;
+            left: -100px;
+        }
+        .blob-2 {
+            width: 550px;
+            height: 550px;
+            background: #ff1493;
+            bottom: -150px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.25; }
+            100% { transform: scale(1.2); opacity: 0.4; }
+        }
+
+        /* Top Action Buttons */
+        .top-controls {
+            position: fixed;
+            top: 24px;
+            right: 28px;
+            z-index: 100;
+            display: flex;
+            gap: 16px;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--paper-border);
+            color: #fff;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: scale(1.1);
+        }
+
+        /* Slide Viewport */
+        .slides-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.92) translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Book / Parchment Glass Card */
+        .parchment-card {
+            background: var(--paper-bg);
+            border: 1px solid var(--paper-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 50px 40px;
+            max-width: 750px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(246, 211, 101, 0.05);
+            position: relative;
+        }
+
+        /* Slide Badges & Sub-elements */
+        .slide-tag {
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+
+        .poem-main {
+            font-family: 'Alex Brush', cursive;
+            font-size: 4.8rem;
+            color: #ffffff;
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+            margin: 15px 0;
+            line-height: 1.2;
+        }
+
+        .poem-sub {
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            color: var(--gold);
+            text-shadow: 0 0 15px var(--gold-glow);
+            margin-top: 25px;
+        }
+
+        /* Slide 2: Seasons Grid */
+        .seasons-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 30px 0 10px 0;
+        }
+
+        .season-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 15px 10px;
+            transition: all 0.3s ease;
+        }
+
+        .season-box:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 75, 114, 0.15);
+            border-color: var(--primary);
+        }
+
+        .season-box i {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .season-box span {
+            display: block;
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+
+        /* Slide 4: Day & Night Visual */
+        .day-night-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 25px 0;
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: var(--gold);
+            box-shadow: 0 0 20px var(--gold-glow);
+            animation: floatSlow 3s infinite alternate ease-in-out;
+        }
+
+        .icon-circle:nth-child(2) {
+            animation-delay: -1.5s;
+            border-color: #a78bfa;
+            color: #a78bfa;
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
+        }
+
+        @keyframes floatSlow {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+
+        /* Slide 5: Grand Finale Heart Burst */
+        .grand-heart {
+            font-size: 5rem;
+            color: var(--primary);
+            text-shadow: 0 0 35px var(--primary-glow);
+            animation: pulseGrand 1.2s infinite alternate ease-in-out;
+            margin-bottom: 10px;
+        }
+
+        @keyframes pulseGrand {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.25) rotate(5deg); }
+        }
+
+        .girlfriend-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px dashed var(--gold);
+            color: var(--gold);
+            font-family: 'Caveat', cursive;
+            font-size: 2.4rem;
+            text-align: center;
+            width: 280px;
+            outline: none;
+            margin-top: 15px;
+        }
+
+        .girlfriend-input::placeholder {
+            color: rgba(246, 211, 101, 0.5);
+        }
+
+        /* Navigation Bar */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 12px 28px;
+            border-radius: 40px;
+            border: 1px solid var(--paper-border);
+            backdrop-filter: blur(12px);
+        }
+
+        .nav-arrow {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .nav-arrow:hover:not(:disabled) {
+            opacity: 1;
+            color: var(--gold);
+            transform: scale(1.2);
+        }
+
+        .nav-arrow:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+
+        .dots-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .dot.active {
+            background: var(--gold);
+            width: 32px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px var(--gold-glow);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .parchment-card {
+                padding: 35px 20px;
+            }
+            .poem-main {
+                font-size: 3.2rem;
+            }
+            .poem-sub {
+                font-size: 1.8rem;
+            }
+            .seasons-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
+
+    <div class="top-controls">
+        <button class="icon-btn" id="musicToggle" title="Toggle Music Box">
+            <i class="fa-solid fa-music"></i>
+        </button>
+        <button class="icon-btn" id="burstBtn" title="Send Hearts!">
+            <i class="fa-solid fa-heart"></i>
+        </button>
+    </div>
+
+    <div class="slides-wrapper">
+
+        <div class="slide active" id="slide1">
+            <div class="parchment-card">
+                <div class="slide-tag">Slide 1</div>
+                <h1 class="poem-main">I can love u for 4 days...</h1>
+                <p class="poem-sub">A promise written in time ❤</p>
+            </div>
+        </div>
+
+        <div class="slide" id="slide2">
+            <div class="parchment-card">
+                <div class="slide-tag">Slide 2</div>
+                <h1 class="poem-main">Spring, Summer, Autumn, Winter.</h1>
+                
+                <div class="seasons-grid">
+                    <div class="season-box">
+                        <i class="fa-solid fa-seedling"></i>
+                        <span>Spring</span>
+                    </div>
+                    <div class="season-box">
+                        <i class="fa-solid fa-sun"></i>
+                        <span>Summer</span>
+                    </div>
+                    <div class="season-box">
+                        <i class="fa-solid fa-leaf"></i>
+                        <span>Autumn</span>
+                    </div>
+                    <div class="season-box">
+                        <i class="fa-solid fa-snowflake"></i>
+                        <span>Winter</span>
+                    </div>
+                </div>
+
+                <p class="poem-sub">Oh no, maybe 3 days...</p>
+            </div>
+        </div>
+
+        <div class="slide" id="slide3">
+            <div class="parchment-card">
+                <div class="slide-tag">Slide 3</div>
+                <h1 class="poem-main">Yesterday, Today, Tomorrow.</h1>
+                <p class="poem-sub">What about 2 days...?</p>
+            </div>
+        </div>
+
+        <div class="slide" id="slide4">
+            <div class="parchment-card">
+                <div class="slide-tag">Slide 4</div>
+                <h1 class="poem-main">Day & Night.</h1>
+
+                <div class="day-night-container">
+                    <div class="icon-circle"><i class="fa-solid fa-sun"></i></div>
+                    <div class="icon-circle"><i class="fa-solid fa-moon"></i></div>
+                </div>
+
+                <p class="poem-sub">Maybe one day...</p>
+            </div>
+        </div>
+
+        <div class="slide" id="slide5">
+            <div class="parchment-card">
+                <div class="slide-tag">Slide 5</div>
+                <div class="grand-heart"><i class="fa-solid fa-heart"></i></div>
+                <h1 class="poem-main" style="font-size: 5.5rem; color: var(--gold);">Everyday.</h1>
+                
+                <p class="poem-sub" style="margin-top: 10px;">For my favorite person,</p>
+                <input type="text" class="girlfriend-input" placeholder="[ Her Name Here ]" id="herNameInput">
+                <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.7;">Yours Always & Forever ❤</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="nav-controls">
+        <button class="nav-arrow" id="prevBtn" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="dots-container" id="dotsContainer"></div>
+        <button class="nav-arrow" id="nextBtn" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+
+    <script>
+        // Slide Navigation Engine
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dotsContainer = document.getElementById('dotsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        slides.forEach((_, idx) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (idx === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(idx));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlides() {
+            slides.forEach((slide, idx) => {
+                slide.classList.toggle('active', idx === currentSlide);
+            });
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === currentSlide);
+            });
+
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+
+            if (currentSlide === 4) {
+                triggerHeartBurst();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlides();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlides();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlides();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Floating Hearts Canvas Engine
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class HeartParticle {
+            constructor(x, y) {
+                this.x = x || Math.random() * canvas.width;
+                this.y = y || canvas.height + 20;
+                this.size = Math.random() * 12 + 6;
+                this.speedY = Math.random() * 1.2 + 0.4;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.opacity = Math.random() * 0.7 + 0.3;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotSpeed = (Math.random() - 0.5) * 0.02;
+                this.color = ['#ff4b72', '#f6d365', '#ff85a2', '#ffd1dc'][Math.floor(Math.random() * 4)];
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += Math.sin(this.y * 0.02) + this.speedX;
+                this.rotation += this.rotSpeed;
+                if (this.y < -20) {
+                    this.y = canvas.height + 20;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                
+                ctx.beginPath();
+                const topCurve = this.size * 0.3;
+                ctx.moveTo(0, topCurve);
+                ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurve);
+                ctx.bezierCurveTo(-this.size / 2, (this.size + topCurve) / 2, 0, this.size, 0, this.size);
+                ctx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurve) / 2, this.size / 2, topCurve);
+                ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurve);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 30; i++) {
+                particles.push(new HeartParticle(Math.random() * canvas.width, Math.random() * canvas.height));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        function triggerHeartBurst() {
+            for (let i = 0; i < 20; i++) {
+                const p = new HeartParticle(window.innerWidth / 2, window.innerHeight / 2);
+                p.speedY = (Math.random() - 0.5) * 5;
+                p.speedX = (Math.random() - 0.5) * 5;
+                particles.push(p);
+                setTimeout(() => {
+                    const idx = particles.indexOf(p);
+                    if (idx > -1) particles.splice(idx, 1);
+                }, 2500);
+            }
+        }
+
+        document.getElementById('burstBtn').addEventListener('click', triggerHeartBurst);
+
+        // Web Audio Synth Romantic Chimes
+        let audioCtx = null;
+        let isPlaying = false;
+        let interval = null;
+        const notes = [261.63, 329.63, 392.00, 523.25, 440.00, 349.23, 293.66];
+
+        document.getElementById('musicToggle').addEventListener('click', () => {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const btn = document.getElementById('musicToggle');
+
+            if (!isPlaying) {
+                isPlaying = true;
+                btn.style.background = 'var(--primary)';
+                btn.style.boxShadow = '0 0 20px var(--primary-glow)';
+                let i = 0;
+                interval = setInterval(() => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx
